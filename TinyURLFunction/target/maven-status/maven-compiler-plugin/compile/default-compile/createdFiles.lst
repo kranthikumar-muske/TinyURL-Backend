@@ -1,0 +1,5 @@
+com/tiny/url/dynamoDB/TinyURLDAOIMPL.class
+com/tiny/url/dynamoDB/TinyURLDAO.class
+com/tiny/url/lambdas/TinyURLLambda.class
+com/tiny/url/dynamoDB/table/mapping/TinyURL.class
+com/tiny/url/dynamoDB/HelloDynamo.class

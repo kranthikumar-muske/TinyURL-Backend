@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'TinyURL-Backend
+
+  Sample SAM Template for TinyURL-Backend
+
+  '
+Globals:
+  Function:
+    Timeout: 20
+Resources:
+  TinyURLFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://tiny-url-bucket/3857af0eb29404761590472a3f202aa7
+      Handler: com.tiny.url.lambdas.TinyURLLambda::handleRequest
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        GetLongURL:
+          Type: Api
+          Properties:
+            Path: /getLongURL
+            Method: get
+        DeleteShortURL:
+          Type: Api
+          Properties:
+            Path: /deleteShortURL
+            Method: delete
+        CreateShortURL:
+          Type: Api
+          Properties:
+            Path: /createShortURL
+            Method: post
+        GetShortURLStats:
+          Type: Api
+          Properties:
+            Path: /getShortURLStats
+            Method: get
+    Metadata:
+      SamResourceId: TinyURLFunction
