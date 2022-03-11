@@ -43,7 +43,7 @@ If you would like to make any code changes and redeploy the APIS, follow below s
 * install intelliJ with AWS toolkit
 * create an aws account if you dont have one.
 * connect to aws account from your intelliJ using aws toolkit
-* open this project in intelliJ
+* clone this project master branch and open it in intelliJ
 * make code changes
 * right click on the project and click on deploy serverless application
 * now goto aws API gateway in aws console and grab the endpoints
