@@ -1,6 +1,6 @@
 # TinyURL-Backend
-Front end deployed App: https://github.com/kranthikumar-muske/MyTinyURL
-Front end source code: https://github.com/kranthikumar-muske/MyTinyURL
+* Front end deployed App: https://github.com/kranthikumar-muske/MyTinyURL
+* Front end source code: https://github.com/kranthikumar-muske/MyTinyURL
 
 This backend code is serveles(deployed to cloud), you dont need to setup local to test it.
 
