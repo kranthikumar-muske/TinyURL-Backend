@@ -34,6 +34,14 @@ public class TinyURLLambda implements RequestHandler<APIGatewayProxyRequestEvent
     private Map<String, Map<String,Integer>> trackShortURLMap = new HashMap<>();
 
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
+        //enable CORS to acces from other domains
+        if(!input.getHeaders().containsKey("Access-Control-Allow-Origin")) {
+            Map<String, String> inputHeaders = input.getHeaders();
+            inputHeaders.put("Access-Control-Allow-Origin", "*");
+            inputHeaders.put("Access-Control-Allow-Methods", "*");
+            inputHeaders.put("Access-Control-Allow-Credentials", "true");
+            input.setHeaders(inputHeaders);
+        }
             if(tinyURLDAO == null) {
                 tinyURLDAO = new TinyURLDAOIMPL();
             }
@@ -149,13 +157,13 @@ public class TinyURLLambda implements RequestHandler<APIGatewayProxyRequestEvent
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("X-Custom-Header", "application/json");
+        headers.put("Access-Control-Allow-Origin", "*");
         return new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
     }
 
 
     private void trackURLAccessed(String shortURL) {
-
         if(trackShortURLMap.containsKey(shortURL)){
             Map<String, Integer> innerMap = trackShortURLMap.get(shortURL);
 

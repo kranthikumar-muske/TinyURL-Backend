@@ -4,7 +4,6 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.google.common.cache.LoadingCache;
@@ -24,8 +23,6 @@ public class TinyURLDAOIMPL implements TinyURLDAO{
         dynamoDBMapper = new DynamoDBMapper(buildDynamoDBClient());
     }
 
-
-
     @Override
     public TinyURL getLongURL(String shortURL) throws ExecutionException {
         final LoadingCache<String, TinyURL> cache =
@@ -39,12 +36,26 @@ public class TinyURLDAOIMPL implements TinyURLDAO{
         TinyURL tinyURL = new TinyURL();
         tinyURL.setShortURL(shortURL);
         tinyURL.setLongURL(longURL);
+
+        //write to DynamoDB
         dynamoDBMapper.save(tinyURL);
+
+        //write to cache
+        final LoadingCache<String, TinyURL> cache =
+                LoadURLSFromCache.getInstance(dynamoDBMapper).getCache();
+        cache.put(shortURL,tinyURL);
+
         return tinyURL;
     }
 
     @Override
     public TinyURL deleteShortURL(String shortURL) {
+        //remove key from cache first
+        final LoadingCache<String, TinyURL> cache =
+                LoadURLSFromCache.getInstance(dynamoDBMapper).getCache();
+        cache.invalidate(shortURL);
+
+        //delete data from dynamoDB
         TinyURL tinyURL = dynamoDBMapper.load(TinyURL.class,shortURL);
         dynamoDBMapper.delete(tinyURL);
         return tinyURL;

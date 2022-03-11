@@ -12,7 +12,7 @@ Resources:
   TinyURLFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://tiny-url-bucket/3857af0eb29404761590472a3f202aa7
+      CodeUri: s3://tiny-url-bucket/a3a2ef928c98f87f3f666ff6f2037609
       Handler: com.tiny.url.lambdas.TinyURLLambda::handleRequest
       Runtime: java8
       MemorySize: 512
