@@ -25,6 +25,7 @@ public class TinyURLDAOIMPL implements TinyURLDAO{
 
     @Override
     public TinyURL getLongURL(String shortURL) throws ExecutionException {
+        //load data from cache if available else from dynamoDB
         final LoadingCache<String, TinyURL> cache =
                 LoadURLSFromCache.getInstance(dynamoDBMapper).getCache();
 
@@ -50,14 +51,15 @@ public class TinyURLDAOIMPL implements TinyURLDAO{
 
     @Override
     public TinyURL deleteShortURL(String shortURL) {
-        //remove key from cache first
+        //delete data from dynamoDB
+        TinyURL tinyURL = dynamoDBMapper.load(TinyURL.class,shortURL);
+        dynamoDBMapper.delete(tinyURL);
+
+        //remove key from cache
         final LoadingCache<String, TinyURL> cache =
                 LoadURLSFromCache.getInstance(dynamoDBMapper).getCache();
         cache.invalidate(shortURL);
 
-        //delete data from dynamoDB
-        TinyURL tinyURL = dynamoDBMapper.load(TinyURL.class,shortURL);
-        dynamoDBMapper.delete(tinyURL);
         return tinyURL;
     }
 
